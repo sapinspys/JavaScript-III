@@ -219,3 +219,5 @@ console.log(hobbit1.entFlood(evilWizard1))
 console.log(hobbit1.entFlood(evilWizard1))
 console.log(evilWizard1.fireball(hobbit1))
 console.log(hobbit1.entFlood(evilWizard1))
+
+// Thank you Lambda!
