@@ -32,11 +32,11 @@ GameObject.prototype.destroy = function () {;
   * should inherit destroy() from GameObject's prototype
 */
 
-function CharacterStats(charStats) {
+function CharacterStats(charAttributes) {
   // Connect this keyword to GameObject:
-  GameObject.call(this, charStats); 
-  this.healthPoints = charStats.healthPoints;
-  this.name = charStats.name;
+  GameObject.call(this, charAttributes); 
+  this.healthPoints = charAttributes.healthPoints;
+  this.name = charAttributes.name;
 }
 // Set prototype inheritance (inherit destroy()) to GameObject:
 CharacterStats.prototype = Object.create(GameObject.prototype);
@@ -142,6 +142,80 @@ Humanoid.prototype.greet = function () {
 
 
   // Stretch task: 
-  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+  // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function. 
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(evilAttributes) {
+    Humanoid.call(this, evilAttributes);
+  }
+
+  Villain.prototype = Object.create(Humanoid.prototype)
+
+  Villain.prototype.fireball = function(otherObject) {
+    console.log(`${this.name} launched a scorching hot fireball. Watch out ${otherObject.name}!`);
+    otherObject.healthPoints -= 3;
+    if (otherObject.healthPoints > 0) {
+      return `${otherObject.name} barely escaped and suffered 3 dmg points. New health: ${otherObject.healthPoints}`;
+    } else {
+      return otherObject.destroy();
+    }
+  }
+
+  function Hero(pureAttributes) {
+    Humanoid.call(this, pureAttributes);
+  }
+
+  Hero.prototype = Object.create(Humanoid.prototype)
+
+  Hero.prototype.entFlood = function(otherObject) {
+    console.log(`${this.name} and Merry direct more ents to enter the area. Massive damage is on the way!`);
+    otherObject.healthPoints -= 25;
+    if (otherObject.healthPoints > 0) {
+      return `${otherObject.name} retreats further and ${otherObject.team} suffers major casualties. New health: ${otherObject.healthPoints}`;
+    } else {
+      return otherObject.destroy();
+    }
+  }
+
+  const evilWizard1 = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 1,
+      height: 5,
+    },
+    healthPoints: 100,
+    name: 'Saruman',
+    team: 'Isengard',
+    weapons: [
+      'Staff of Power',
+    ],
+    language: 'Black Speech',
+  });
+
+  const hobbit1 = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 2,
+      height: 4,
+    },
+    healthPoints: 10,
+    name: 'Pippin',
+    team: 'The Shire',
+    weapons: [
+      `Troll's Bane`, 'Ents'
+    ],
+    language: 'Common Tongue',
+  });
+
+console.log(evilWizard1.name);
+console.log(hobbit1.name);
+console.log(evilWizard1.fireball(hobbit1))
+console.log(hobbit1.entFlood(evilWizard1))
+console.log(evilWizard1.fireball(hobbit1))
+console.log(hobbit1.entFlood(evilWizard1))
+console.log(hobbit1.entFlood(evilWizard1))
+console.log(evilWizard1.fireball(hobbit1))
+console.log(hobbit1.entFlood(evilWizard1))
